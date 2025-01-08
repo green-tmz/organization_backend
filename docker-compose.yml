@@ -1,0 +1,52 @@
+services:
+
+  server:
+    container_name: nginx_organization
+    image: nginx:alpine
+    working_dir: /application
+    ports:
+      - "0.0.0.0:81:80"
+    volumes:
+      - ./:/var/www/organization
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - organization
+
+  app:
+    container_name: app_organization
+    build:
+      context: ./deploy/dockerfiles
+      dockerfile: local-alpine.Dockerfile
+      args:
+        WWWUSER: '${WWWUSER:-1000}'
+        WWWGROUP: '${WWWGROUP:-1000}'
+    working_dir: /var/www/organization
+    volumes:
+      - ./:/var/www/organization
+      - ./deploy/php/uploads.ini:/usr/local/etc/php/php.ini
+    networks:
+      - organization
+
+  pgsql:
+    container_name: pgsql_organization
+    image: postgres:16.0-alpine
+    environment:
+      PGPASSWORD: '${DB_PASSWORD:-secret}'
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+    volumes:
+      - organization-pgsql-data:/var/lib/postgresql/data
+    ports:
+      - '127.0.0.1:5333:5432'
+    networks:
+      - organization
+
+volumes:
+  organization-pgsql-data:
+    driver: local
+
+
+networks:
+  organization:
+    driver: bridge

@@ -1,0 +1,58 @@
+services:
+
+  server:
+    container_name: nginx_organization
+    image: nginx:alpine
+    working_dir: /application
+    restart: always
+    ports:
+      - "127.0.0.1:3838:80"
+    volumes:
+      - ./:/var/www/organization
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d
+      - /home/organization/projects/laravel/storage:/var/www/organization/storage
+    networks:
+      - organization
+
+  app:
+    container_name: app_organization
+    restart: always
+    build:
+      context: ./deploy/dockerfiles
+      dockerfile: test-alpine.Dockerfile
+      args:
+        WWWUSER: '${WWWUSER:-1000}'
+        WWWGROUP: '${WWWGROUP:-1000}'
+    working_dir: /var/www/organization
+    volumes:
+      - ./:/var/www/organization
+      - ./deploy/php/uploads.ini:/usr/local/etc/php/php.ini
+      - /home/organization/projects/laravel/storage:/var/www/organization/storage
+    networks:
+      - organization
+
+  pgsql:
+    restart: always
+    container_name: pgsql_organization
+    image: postgres:16.0-alpine
+    environment:
+      PGPASSWORD: '${DB_PASSWORD:-secret}'
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+    volumes:
+      - organization-pgsql-data:/var/lib/postgresql/data
+    ports:
+      - '5333:5432'
+    networks:
+      - organization
+
+volumes:
+  organization-pgsql-data:
+    driver: local
+
+networks:
+  organization:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450
