@@ -17,7 +17,9 @@ class MakeModule extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'make:module {module}';
+    protected $signature = 'make:module {module}
+                                        {--M|model : Create a model for the module}
+                                        {--m|migration : Create a migration for the module}';
 
     /**
      * The console command description.
@@ -36,6 +38,8 @@ class MakeModule extends Command implements PromptsForMissingInput
     {
         return [
             'module' => ['Enter the name of the module', 'e.g., Auth/User'],
+            'migration' => ['Enter the migration name for the module', 'e.g., create_users_table'],
+            'model' => ['Enter the model name for the module', 'e.g., User'],
         ];
     }
 
@@ -52,8 +56,21 @@ class MakeModule extends Command implements PromptsForMissingInput
             $this->components->error("Module already exists.");
             return;
         }
-        $this->createModel($name, $path);
-        $this->createMigration($name);
+        if ($this->option('migration')) {
+            $this->createMigration($name);
+        } else {
+            if ($this->confirm('Do you want to create a migration for the module?')) {
+                $this->createMigration($name);
+            }
+        }
+        if ($this->option('model')) {
+            $this->createModel($name, $path);
+        } else {
+            if ($this->confirm('Do you want to create a model for the module?')) {
+                $this->createModel($name, $path);
+            }
+        }
+
         $this->createController($name, $path);
         $this->makeRoutes($name, $path);
     }
@@ -65,8 +82,9 @@ class MakeModule extends Command implements PromptsForMissingInput
 
     private function getModuleName($argument): array
     {
-        $path = Str::singular(ucwords($argument, "/"));
-        return explode('/', $path);
+        $path = str_replace('/\\/', '/', $argument);
+        $path = Str::singular(ucwords($path, "/"));
+        return explode("\\", $path);
     }
 
     private function createModel($name, $path): void
@@ -103,9 +121,13 @@ class MakeModule extends Command implements PromptsForMissingInput
             $this->components->error("Routes already exists.");
             return;
         }
+
         $stub = $this->files->get(app_path('../resources/stubs/routes.api.stub'));
-        $stub = str_replace('JummyRoutePrefix',
-            lcfirst(array_pop($name)),
+        $stub = str_replace([
+                'JummyRoutePrefix',
+            ], [
+                lcfirst(array_pop($name)),
+            ],
             $stub
         );
         $this->files->ensureDirectoryExists(app_path("Modules/" . $path. "/Routes"));
