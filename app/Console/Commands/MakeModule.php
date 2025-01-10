@@ -107,6 +107,7 @@ class MakeModule extends Command implements PromptsForMissingInput
         $this->call('make:controller', [
             'name' => "App\\Modules\\" . $path. "\\Controllers\\". array_pop($name). "Controller",
             '--resource' => true,
+            '--test' => true,
         ]);
     }
 
