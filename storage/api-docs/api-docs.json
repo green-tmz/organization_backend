@@ -1,0 +1,252 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Авторизация/Базовые методы",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Авторизация"
+                ],
+                "summary": "Регистрация пользователя",
+                "description": "Для регистрации нужен email и пароль пользователя",
+                "operationId": "authRegister",
+                "requestBody": {
+                    "description": "Значения общих настроек",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "description": "First Name",
+                                        "type": "string",
+                                        "example": "First Name"
+                                    },
+                                    "last_name": {
+                                        "description": "Last Name",
+                                        "type": "string",
+                                        "example": "Last Name"
+                                    },
+                                    "email": {
+                                        "description": "Email",
+                                        "type": "string",
+                                        "example": "admin@admin.ru"
+                                    },
+                                    "password": {
+                                        "description": "Пароль",
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "Подтверждение пароля",
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Неверные авторизационные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "error_code": {
+                                                    "type": "integer",
+                                                    "example": "2"
+                                                },
+                                                "error_msg": {
+                                                    "type": "string",
+                                                    "example": "Неверные авторизационные данные."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "error_code": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "error_msg": {
+                                                    "type": "string",
+                                                    "example": "Ошибка валидации."
+                                                },
+                                                "fields": {
+                                                    "properties": {
+                                                        "email": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "example": "Поле email должно содержать корректный email."
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Авторизация"
+                ],
+                "summary": "Авторизация пользователя",
+                "description": "Для авторизации нужен email и пароль пользователя",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "description": "Значения общих настроек",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email",
+                                        "type": "string",
+                                        "example": "admin@admin.ru"
+                                    },
+                                    "password": {
+                                        "description": "Пароль",
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Неверные авторизационные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "error_code": {
+                                                    "type": "integer",
+                                                    "example": "2"
+                                                },
+                                                "error_msg": {
+                                                    "type": "string",
+                                                    "example": "Неверные авторизационные данные."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "error_code": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "error_msg": {
+                                                    "type": "string",
+                                                    "example": "Ошибка валидации."
+                                                },
+                                                "fields": {
+                                                    "properties": {
+                                                        "email": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "example": "Поле email должно содержать корректный email."
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "Авторизация"
+                ],
+                "summary": "Разлогинивание пользователя",
+                "description": "Разлогинивает пользователя",
+                "operationId": "authLogout",
+                "responses": {
+                    "204": {
+                        "description": "Разлогинивание прошло успешно"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Авторизация",
+            "description": "Авторизация"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Введите token в следующем формате: Bearer Ваш Api Token",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
