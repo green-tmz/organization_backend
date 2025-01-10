@@ -1,0 +1,10 @@
+{
+    "sidebar.dashboard": "Dashboard",
+    "sidebar.calendar": "Calendar",
+    "sidebar.settings": "Settings",
+    "sidebar.settings.users": "Users",
+    "sidebar.settings.groups": "Groups",
+    "sidebar.settings.services": "Services",
+    "auth.not_found": "Resource not found",
+    "auth.invalid_credentials": "Authorization error"
+}
