@@ -38,8 +38,6 @@ class MakeModule extends Command implements PromptsForMissingInput
     {
         return [
             'module' => ['Enter the name of the module', 'e.g., Auth/User'],
-            'migration' => ['Enter the migration name for the module', 'e.g., create_users_table'],
-            'model' => ['Enter the model name for the module', 'e.g., User'],
         ];
     }
 
@@ -56,6 +54,7 @@ class MakeModule extends Command implements PromptsForMissingInput
             $this->components->error("Module already exists.");
             return;
         }
+
         if ($this->option('migration')) {
             $this->createMigration($name);
         } else {
@@ -63,6 +62,7 @@ class MakeModule extends Command implements PromptsForMissingInput
                 $this->createMigration($name);
             }
         }
+
         if ($this->option('model')) {
             $this->createModel($name, $path);
         } else {
@@ -82,9 +82,8 @@ class MakeModule extends Command implements PromptsForMissingInput
 
     private function getModuleName($argument): array
     {
-        $path = str_replace('/\\/', '/', $argument);
-        $path = Str::singular(ucwords($path, "/"));
-        return explode("\\", $path);
+        $path = Str::singular(ucwords($argument, "/"));
+        return explode("/", $path);
     }
 
     private function createModel($name, $path): void
