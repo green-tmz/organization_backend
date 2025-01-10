@@ -29,13 +29,16 @@ services:
 
   pgsql:
     container_name: pgsql_organization
-    image: postgres:16.0-alpine
+    build:
+      context: ./deploy/dockerfiles
+      dockerfile: postgres-alpine.Dockerfile
     environment:
       PGPASSWORD: '${DB_PASSWORD:-secret}'
       POSTGRES_DB: '${DB_DATABASE}'
       POSTGRES_USER: '${DB_USERNAME}'
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
+      - ./deploy/postgres:/docker-entrypoint-initdb.d/
       - organization-pgsql-data:/var/lib/postgresql/data
     ports:
       - '127.0.0.1:5333:5432'
