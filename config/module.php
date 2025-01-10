@@ -6,6 +6,10 @@ return [
 
     /** Modules **/
     "modules" => [
-        "Auth" => [],
+        'Api' => [
+            "Auth" => [
+                //
+            ],
+        ],
     ]
 ];
