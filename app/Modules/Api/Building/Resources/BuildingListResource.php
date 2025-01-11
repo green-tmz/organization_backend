@@ -19,7 +19,7 @@ class BuildingListResource extends JsonResource
             'city' => $this->city,
             'street' => $this->street,
             'office' => $this->office,
-            'location' => $this->location,
+            'location' => $this->location
         ];
     }
 }

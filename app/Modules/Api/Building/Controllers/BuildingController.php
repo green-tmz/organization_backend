@@ -97,22 +97,45 @@ class BuildingController extends Controller
     public function create(BuildingRequest $request): JsonResource
     {
         $coordinates =  explode(',', $request->validated('location'));
-        Building::create([
+        $building = Building::create([
             'city' => $request->validated('city'),
             'street' => $request->validated('street'),
             'office' => $request->validated('office'),
             'location' => Point::makeGeodetic($coordinates[0], $coordinates[1]),
         ]);
 
-        return BuildingListResource::collection(Building::all());
+        return new BuildingResource($building);
     }
 
     /**
-     * Display the specified resource.
+     * Информация о здании.
+     *
+     * @OA\Get(
+     *     path="/api/building/{building}",
+     *     operationId="buildingShow",
+     *     tags={"Информация о здании"},
+     *     summary="Информация о здании.",
+     *     description="Информация о здании.",
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         description="id здания",
+     *         in="path",
+     *         name="building",
+     *         required=true,
+     *         example="1"
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Удаление здания прошло успешно",
+     *     )
+     * )
+     *
+     * @param  Building  $building
+     * @return JsonResource
      */
-    public function show(string $id)
+    public function show(Building $building): JsonResource
     {
-        //
+        return new BuildingResource($building);
     }
 
     /**
@@ -182,7 +205,7 @@ class BuildingController extends Controller
      *     operationId="buildingDestroy",
      *     tags={"Удаление здания"},
      *     summary="Удаление здания.",
-     *     description="УУдаление здания.",
+     *     description="Удаление здания.",
      *     security={ {"sanctum": {} }},
      *     @OA\Parameter(
      *         description="id здания",
@@ -200,7 +223,7 @@ class BuildingController extends Controller
      * @param  Building  $building
      * @return JsonResource
      */
-    public function destroy(Building  $building): JsonResource
+    public function destroy(Building $building): JsonResource
     {
         // /** @var User $user */
         // foreach($department->user as $user) {

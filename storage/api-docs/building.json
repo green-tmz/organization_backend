@@ -120,6 +120,33 @@
             }
         },
         "/api/building/{building}": {
+            "get": {
+                "tags": [
+                    "Информация о здании"
+                ],
+                "summary": "Информация о здании.",
+                "description": "Информация о здании.",
+                "operationId": "buildingShow",
+                "parameters": [
+                    {
+                        "name": "building",
+                        "in": "path",
+                        "description": "id здания",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Удаление здания прошло успешно"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
             "put": {
                 "tags": [
                     "Редактирование здания"
@@ -161,7 +188,7 @@
                                     "location": {
                                         "description": "Location",
                                         "type": "string",
-                                        "example": "53.463493, -2.292279"
+                                        "example": "49.87108851299202, 8.625026485851762"
                                     }
                                 },
                                 "type": "object"
@@ -211,7 +238,7 @@
                     "Удаление здания"
                 ],
                 "summary": "Удаление здания.",
-                "description": "УУдаление здания.",
+                "description": "Удаление здания.",
                 "operationId": "buildingDestroy",
                 "parameters": [
                     {
@@ -243,6 +270,10 @@
         {
             "name": "Добавление нового здания",
             "description": "Добавление нового здания"
+        },
+        {
+            "name": "Информация о здании",
+            "description": "Информация о здании"
         },
         {
             "name": "Редактирование здания",
