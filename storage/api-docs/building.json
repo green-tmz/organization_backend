@@ -1,0 +1,297 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Здания/Базовые методы",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/building": {
+            "get": {
+                "tags": [
+                    "Список всех зданий"
+                ],
+                "summary": "Список всех зданий.",
+                "description": "Получения списока всех зданий",
+                "operationId": "getBuildingList",
+                "responses": {
+                    "200": {
+                        "description": "Список всех зданий",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "lang": {
+                                            "type": "string",
+                                            "example": "ru"
+                                        },
+                                        "users": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Добавление нового здания"
+                ],
+                "summary": "Добавление нового здания.",
+                "description": "Добавляет новое здание",
+                "operationId": "buildingStore",
+                "requestBody": {
+                    "description": "Значения общих настроек",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "city": {
+                                        "description": "Сity",
+                                        "type": "string",
+                                        "example": "Москва"
+                                    },
+                                    "street": {
+                                        "description": "Street",
+                                        "type": "string",
+                                        "example": "Ленина 1"
+                                    },
+                                    "office": {
+                                        "description": "Office",
+                                        "type": "string",
+                                        "example": "3"
+                                    },
+                                    "location": {
+                                        "description": "Location",
+                                        "type": "string",
+                                        "example": "53.463493, -2.292279"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ответ с id должности",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Должность"
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "department"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/building/{building}": {
+            "get": {
+                "tags": [
+                    "Информация о здании"
+                ],
+                "summary": "Информация о здании.",
+                "description": "Информация о здании.",
+                "operationId": "buildingShow",
+                "parameters": [
+                    {
+                        "name": "building",
+                        "in": "path",
+                        "description": "id здания",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Удаление здания прошло успешно"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Редактирование здания"
+                ],
+                "summary": "Редактирование здания",
+                "description": "Редактирует здание и возвращает ее данные",
+                "operationId": "buildingUpdate",
+                "parameters": [
+                    {
+                        "name": "building",
+                        "in": "path",
+                        "description": "id здания",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Значения общих настроек",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "city": {
+                                        "description": "Сity",
+                                        "type": "string",
+                                        "example": "Москва"
+                                    },
+                                    "street": {
+                                        "description": "Street",
+                                        "type": "string",
+                                        "example": "Ленина 1"
+                                    },
+                                    "office": {
+                                        "description": "Office",
+                                        "type": "string",
+                                        "example": "3"
+                                    },
+                                    "location": {
+                                        "description": "Location",
+                                        "type": "string",
+                                        "example": "49.87108851299202, 8.625026485851762"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ответ с id группы",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Новая должность"
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "new-department"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Удаление здания"
+                ],
+                "summary": "Удаление здания.",
+                "description": "Удаление здания.",
+                "operationId": "buildingDestroy",
+                "parameters": [
+                    {
+                        "name": "building",
+                        "in": "path",
+                        "description": "id здания",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Удаление здания прошло успешно"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Список всех зданий",
+            "description": "Список всех зданий"
+        },
+        {
+            "name": "Добавление нового здания",
+            "description": "Добавление нового здания"
+        },
+        {
+            "name": "Информация о здании",
+            "description": "Информация о здании"
+        },
+        {
+            "name": "Редактирование здания",
+            "description": "Редактирование здания"
+        },
+        {
+            "name": "Удаление здания",
+            "description": "Удаление здания"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Введите token в следующем формате: Bearer Ваш Api Token",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
