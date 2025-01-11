@@ -105,7 +105,7 @@ class MakeModule extends Command implements PromptsForMissingInput
     private function createController($name, $path): void
     {
         $this->call('make:controller', [
-            'name' => "App\\Modules\\" . $path. "\\Controllers\\". array_pop($name). "Controller",
+            'name' => "App\\Modules\\" . $path . "\\Controllers\\" . array_pop($name) . "Controller",
             '--resource' => true,
             '--test' => true,
         ]);
@@ -116,23 +116,25 @@ class MakeModule extends Command implements PromptsForMissingInput
      */
     private function makeRoutes($name, $path): void
     {
-        $routesPath = app_path("Modules/" . $path. "/Routes/api.php");
+        $routesPath = app_path("Modules/" . $path . "/Routes/api.php");
         if ($this->files->exists($routesPath)) {
             $this->components->error("Routes already exists.");
             return;
         }
 
         $stub = $this->files->get(app_path('../resources/stubs/routes.api.stub'));
-        $stub = str_replace([
+        $stub = str_replace(
+            [
                 'JummyRoutePrefix',
-            ], [
+            ],
+            [
                 lcfirst(array_pop($name)),
             ],
             $stub
         );
-        $this->files->ensureDirectoryExists(app_path("Modules/" . $path. "/Routes"));
+        $this->files->ensureDirectoryExists(app_path("Modules/" . $path . "/Routes"));
         if ($this->files->put($routesPath, $stub)) {
-            $this->components->info("Routes [app/Modules/" . $path. "/Routes/api.php" . "] created successfully.");
+            $this->components->info("Routes [app/Modules/" . $path . "/Routes/api.php" . "] created successfully.");
         }
     }
 }
